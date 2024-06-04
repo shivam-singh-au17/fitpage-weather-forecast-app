@@ -1,0 +1,591 @@
+openapi: 3.0.0
+
+info:
+  title: Fitpage Weather Forecast App Backend APIs
+  description: APIs For Fitpage Weather Forecast Backend Test
+  version: 1.0.0
+
+servers:
+  - url: "http://localhost:3030"
+  - url: "http://fitpage-weather-forecast-app.us-east-1.elasticbeanstalk.com"
+
+tags:
+  - name: Location
+    description: Endpoints related to location operations
+  - name: Weather
+    description: Endpoints related to weather operations
+
+
+components:
+  schemas:
+    CreateLocationRequest:
+      type: object
+      required:
+        - name
+        - latitude
+        - longitude
+      properties:
+        name:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+
+    UpdateLocationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+
+    LocationResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+            latitude:
+              type: number
+            longitude:
+              type: number
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+
+    GetAllLocationsResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  latitude:
+                    type: number
+                  longitude:
+                    type: number
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+            count:
+              type: integer
+
+    WeatherResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            location:
+              type: object
+              properties:
+                name:
+                  type: string
+                region:
+                  type: string
+                country:
+                  type: string
+                lat:
+                  type: number
+                lon:
+                  type: number
+                tz_id:
+                  type: string
+                localtime_epoch:
+                  type: integer
+                localtime:
+                  type: string
+            current:
+              type: object
+              properties:
+                temp_c:
+                  type: number
+                temp_f:
+                  type: number
+                is_day:
+                  type: integer
+                condition:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                humidity:
+                  type: number
+            forecast:
+              type: object
+              properties:
+                forecastday:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                      day:
+                        type: object
+                        properties:
+                          avgtemp_c:
+                            type: number
+                          avgtemp_f:
+                            type: number
+                          maxwind_mph:
+                            type: number
+                          maxwind_kph:
+                            type: number
+                          avghumidity:
+                            type: number
+                          condition:
+                            type: object
+                            properties:
+                              text:
+                                type: string
+                      astro:
+                        type: object
+                        properties:
+                          sunrise:
+                            type: string
+                          sunset:
+                            type: string
+                      hour:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            time:
+                              type: string
+                            is_day:
+                              type: integer
+                            condition:
+                              type: object
+                              properties:
+                                text:
+                                  type: string
+
+    WeatherHistoryResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            location:
+              type: object
+              properties:
+                name:
+                  type: string
+                region:
+                  type: string
+                country:
+                  type: string
+                lat:
+                  type: number
+                lon:
+                  type: number
+                tz_id:
+                  type: string
+                localtime_epoch:
+                  type: integer
+                localtime:
+                  type: string
+            forecast:
+              type: object
+              properties:
+                forecastday:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                      day:
+                        type: object
+                        properties:
+                          avgtemp_c:
+                            type: number
+                          avgtemp_f:
+                            type: number
+                          maxwind_mph:
+                            type: number
+                          maxwind_kph:
+                            type: number
+                          avghumidity:
+                            type: number
+                          condition:
+                            type: object
+                            properties:
+                              text:
+                                type: string
+                      astro:
+                        type: object
+                        properties:
+                          sunrise:
+                            type: string
+                          sunset:
+                            type: string
+                      hour:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            time:
+                              type: string
+                            is_day:
+                              type: integer
+                            condition:
+                              type: object
+                              properties:
+                                text:
+                                  type: string
+
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        message:
+          type: string
+        details:
+          type: string
+          nullable: true
+
+
+paths:
+  /api/locations:
+    post:
+      tags:
+        - Location
+      summary: Create a location
+      description: Create a new location item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLocationRequest"
+      responses:
+        201:
+          description: Location created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      tags:
+        - Location
+      summary: Get locations
+      description: Retrieve a list of locations with optional pagination, sorting, and search functionality.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            description: Page number for pagination
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            description: Number of locations per page
+          required: false
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+            enum: [name, description]
+            description: Field to sort by
+          required: false
+        - in: query
+          name: sortOrder
+          schema:
+            type: string
+            enum: [ASC, DESC]
+            description: Sort order (ASC for ascending, DESC for descending)
+          required: false
+        - in: query
+          name: search
+          schema:
+            type: string
+            description: Search term to filter locations
+          required: false
+      responses:
+        200:
+          description: List of locations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllLocationsResponse"
+        400:
+          description: Bad Request - Validation error in query parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/locations/{locationId}:
+    get:
+      tags:
+        - Location
+      summary: Get location by ID
+      description: Retrieve a location item by its ID.
+      parameters:
+        - in: path
+          name: locationId
+          required: true
+          schema:
+            type: string
+          description: ID of the location item to retrieve
+      responses:
+        200:
+          description: Location found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Location
+      summary: Update location by ID
+      description: Update a location item by its ID.
+      parameters:
+        - in: path
+          name: locationId
+          required: true
+          schema:
+            type: string
+          description: ID of the location item to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLocationRequest"
+      responses:
+        200:
+          description: Location updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Location
+      summary: Delete location by ID
+      description: Delete a location item by its ID.
+      parameters:
+        - in: path
+          name: locationId
+          required: true
+          schema:
+            type: string
+          description: ID of the location item to delete
+      responses:
+        200:
+          description: Location deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        400:
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/weathers/{locationId}:
+    get:
+      tags:
+        - Weather
+      summary: Get weather forecast by location ID
+      description: Retrieve a weather forecast by location ID.
+      parameters:
+        - in: path
+          name: locationId
+          required: true
+          schema:
+            type: string
+          description: ID of the location to retrieve weather forecast
+        - in: query
+          name: daysAhead
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 14
+          description: Number of days of weather forecast. Value ranges from 1 to 14
+      responses:
+        200:
+          description: Weather report found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeatherResponse"
+        400:
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/weathers/history:
+    get:
+      tags:
+        - Weather
+      summary: Get weather forecast history by location ID
+      description: Retrieve a weather forecast history by location ID.
+      parameters:
+        - in: query
+          name: locationId
+          required: true
+          schema:
+            type: string
+          description: ID of the location to retrieve weather forecast history
+        - in: query
+          name: daysBehind
+          required: true
+          schema:
+            type: integer
+          description: Number of days of weather forecast. Days Values [ 7, 15, 30 ]
+      responses:
+        200:
+          description: Weather forecast history found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeatherHistoryResponse"
+        400:
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"

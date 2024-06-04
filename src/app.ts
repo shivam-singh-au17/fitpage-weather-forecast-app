@@ -4,6 +4,7 @@ import routes from './routers';
 import errorHandler from './middlewares/error-handler';
 import responseHandler from './middlewares/response-handler';
 import rateLimit from 'express-rate-limit';
+import setupSwagger from './utils/swagger';
 
 const configureApp = (app: Application): void => {
     app.use(express.json({ limit: '1mb' }));
@@ -26,6 +27,9 @@ const configureApp = (app: Application): void => {
 
     // Global error handler
     app.use(errorHandler);
+
+    // Setup Swagger
+    setupSwagger(app);
 };
 
 // Create and configure the app
