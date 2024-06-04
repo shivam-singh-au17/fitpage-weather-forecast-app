@@ -7,6 +7,9 @@ type EnvVars = {
     JWT_SECRET: string;
     LOG_FILE_PATH: string;
     LOG_LEVEL: string;
+    WEATHER_API_KEY: string;
+    WEATHER_API_URL: string;
+    CACHE_TTL: string;
 };
 
 // Load .env.development in development, .env in production
@@ -14,7 +17,7 @@ const envFile: string = process.env.NODE_ENV !== 'production' ? '.env.developmen
 dotenv.config({ path: path.join(__dirname, '../../', envFile) });
 
 function loadEnvVars(): EnvVars {
-    const requiredVars: (keyof EnvVars)[] = ['MONGODB_URI', 'JWT_SECRET'];
+    const requiredVars: (keyof EnvVars)[] = ['MONGODB_URI', 'JWT_SECRET', 'WEATHER_API_KEY', 'WEATHER_API_URL'];
     const envVars: Partial<EnvVars> = {};
 
     requiredVars.forEach(varName => {
@@ -34,6 +37,9 @@ export const {
     PORT = 3030,
     MONGODB_URI,
     JWT_SECRET,
+    WEATHER_API_KEY,
+    WEATHER_API_URL,
+    CACHE_TTL = (60 * 30),
     LOG_FILE_PATH = 'logs/app_error.log',
     LOG_LEVEL = 'info'
 } = config;
