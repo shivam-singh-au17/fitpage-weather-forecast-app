@@ -8,8 +8,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node", "./types/global.d.ts"]
+    "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts", "types/global.d.ts"],
+  "include": ["src/**/*.ts", "src/jest.setup.ts", "src/jest.config.ts"],
   "exclude": ["node_modules"]
 }

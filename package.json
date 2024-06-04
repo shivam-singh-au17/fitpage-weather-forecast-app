@@ -49,6 +49,23 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/express-rate-limit": "^6.0.0",
-    "@types/node-cache": "^4.2.5"
+    "@types/jest": "^29.5.12",
+    "@types/mongodb-memory-server": "^2.3.0",
+    "@types/node-cache": "^4.2.5",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^9.3.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.4"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jest.setup.ts"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }

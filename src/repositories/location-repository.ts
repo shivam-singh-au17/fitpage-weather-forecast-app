@@ -77,7 +77,7 @@ class LocationRepository {
                 projectStage,
                 {
                     $facet: {
-                        users: [
+                        locations: [
                             { $skip: skip },
                             { $limit: limit }
                         ],
@@ -93,7 +93,7 @@ class LocationRepository {
             const [result] = await LocationModel.aggregate(pipeline);
 
             const count = result.count.length > 0 ? result.count[0].count : 0;
-            const data = result.users;
+            const data = result.locations;
 
             return { data, count };
         } catch (err) {
