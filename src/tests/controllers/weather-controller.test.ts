@@ -5,13 +5,11 @@ const mongoose = require('mongoose');
 import { ILocation } from '../../models';
 
 let locationId = new mongoose.Types.ObjectId().toString();
-
 const locationData: Partial<ILocation> = {
     name: "Vadodara, Gujarat, India",
     latitude: 22.3072,
     longitude: 73.1812
 };
-
 let mongoServer: MongoMemoryServer;
 
 // Setup a test database connection
