@@ -1,0 +1,46 @@
+{
+  "name": "fitpage-weather-forecast-app",
+  "version": "1.0.0",
+  "description": "Fitpage Weather Forecast Backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "SET NODE_ENV=production & node dist/index.js",
+    "dev": "SET NODE_ENV=development & nodemon --exec ts-node src/index.ts",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivam-singh-au17/fitpage-weather-forecast-app.git"
+  },
+  "keywords": [
+    "NodeJs",
+    "TypeScript",
+    "MongoDB"
+  ],
+  "author": "Shivam Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivam-singh-au17/fitpage-weather-forecast-app/issues"
+  },
+  "homepage": "https://github.com/shivam-singh-au17/fitpage-weather-forecast-app#readme",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "@types/joi": "^17.2.3",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.14.0",
+    "@types/winston": "^2.4.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.1",
+    "mongoose": "^8.4.1",
+    "nodemon": "^3.1.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "winston": "^3.13.0"
+  }
+}
